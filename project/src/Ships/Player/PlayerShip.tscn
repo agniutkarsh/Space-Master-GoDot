@@ -1,0 +1,87 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://src/Ships/Ship.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/Libraries/StateMachine/StateMachine.gd" type="Script" id=2]
+[ext_resource path="res://src/Ships/Player/States/Move.gd" type="Script" id=3]
+[ext_resource path="res://src/Ships/Player/States/Travel.gd" type="Script" id=4]
+[ext_resource path="res://src/Ships/Player/States/Dock.gd" type="Script" id=5]
+[ext_resource path="res://src/Ships/Player/PlayerShip.gd" type="Script" id=6]
+[ext_resource path="res://src/Ships/Player/States/Precision.gd" type="Script" id=7]
+[ext_resource path="res://src/Ships/Player/player_map_icon.tres" type="Resource" id=8]
+[ext_resource path="res://src/Ships/Player/PlayerGun.gd" type="Script" id=9]
+[ext_resource path="res://src/Ships/Player/Cargo.gd" type="Script" id=10]
+[ext_resource path="res://src/VFX/Explosion/Explosion.tscn" type="PackedScene" id=11]
+[ext_resource path="res://src/Ships/Player/PlayerLaserGun.gd" type="Script" id=12]
+[ext_resource path="res://src/Ships/Guns/LaserGun/LaserGun.tscn" type="PackedScene" id=13]
+[ext_resource path="res://src/Ships/Guns/Projectiles/PlasmaShotPlayer.tscn" type="PackedScene" id=14]
+[ext_resource path="res://src/VFX/ShockwaveEmitter.tscn" type="PackedScene" id=15]
+[ext_resource path="res://src/VFX/RippleEmitter.tscn" type="PackedScene" id=16]
+[ext_resource path="res://src/VFX/MoveTrail.tscn" type="PackedScene" id=17]
+[ext_resource path="res://src/Ships/Player/VFX.gd" type="Script" id=18]
+[ext_resource path="res://src/VFX/DustEmitter.tscn" type="PackedScene" id=19]
+
+[node name="PlayerShip" instance=ExtResource( 1 )]
+collision_mask = 14
+script = ExtResource( 6 )
+projectile_mask = 6
+ExplosionEffect = ExtResource( 11 )
+map_icon = ExtResource( 8 )
+
+[node name="StateMachine" type="Node" parent="." index="2"]
+script = ExtResource( 2 )
+initial_state = NodePath("Move/Travel")
+
+[node name="Move" type="Node" parent="StateMachine" index="0"]
+script = ExtResource( 3 )
+drag_linear_coeff = 0.04
+
+[node name="Travel" type="Node" parent="StateMachine/Move" index="0"]
+script = ExtResource( 4 )
+
+[node name="Dock" type="Node" parent="StateMachine/Move" index="1"]
+script = ExtResource( 5 )
+
+[node name="Precision" type="Node" parent="StateMachine/Move" index="2"]
+script = ExtResource( 7 )
+
+[node name="Gun" parent="." index="3"]
+position = Vector2( 0, -30.5 )
+script = ExtResource( 9 )
+Projectile = ExtResource( 14 )
+
+[node name="CameraTransform" type="RemoteTransform2D" parent="." index="4"]
+
+[node name="UITransform" type="RemoteTransform2D" parent="." index="5"]
+remote_path = NodePath("../BarRig")
+update_rotation = false
+
+[node name="MapTimer" type="Timer" parent="." index="6"]
+
+[node name="Cargo" type="Node" parent="." index="7"]
+script = ExtResource( 10 )
+
+[node name="VFX" type="Node2D" parent="." index="9"]
+script = ExtResource( 18 )
+
+[node name="MoveTrail" parent="VFX" index="0" instance=ExtResource( 17 )]
+z_index = -1
+lifetime = 0.3
+initial_velocity = 200.0
+
+[node name="Shockwave" parent="VFX" index="1" instance=ExtResource( 15 )]
+
+[node name="Ripple" parent="VFX" index="2" instance=ExtResource( 16 )]
+position = Vector2( 0, 20 )
+
+[node name="DustRight" parent="VFX" index="3" instance=ExtResource( 19 )]
+position = Vector2( 0, 20.2518 )
+z_index = -1
+
+[node name="DustLeft" parent="VFX" index="4" instance=ExtResource( 19 )]
+position = Vector2( 0, 20.2518 )
+rotation = 3.66519
+z_index = -1
+
+[node name="LaserGun" parent="." index="10" instance=ExtResource( 13 )]
+rotation = -1.57079
+script = ExtResource( 12 )
