@@ -1,7 +1,7 @@
 # Space IronMaster
 
 
-Spacew IronMaster is a top-down space mining game made with the [Godot game engine](https://godotengine.org/). Control your spaceship in forays into an asteroid belt, gather iron, and bring it back to base. Spend them on upgrading your ship's speed and maneuverability and cargo space.
+Space IronMaster is a top-down space mining game made with the [Godot game engine](https://godotengine.org/). Control your spaceship in forays into an asteroid belt, gather iron, and bring it back to base. Spend them on upgrading your ship's speed and maneuverability and cargo space.
 
 But beware, as you are not alone out here. Pirate miners are out there and want to monopolize the business.
 
